@@ -1,6 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
-
+import ApplicationLayout from "../layouts/ApplicationLayout";
 import PublicLayout from "../layouts/PublicLayout";
+import DashboardPage from "../pages/application/DashboardPage";
+import PlaceholderPage from "../pages/application/PlaceholderPage";
 import LandingPage from "../pages/public/LandingPage";
 import LoginPage from "../pages/public/LoginPage";
 import NotFoundPage from "../pages/public/NotFoundPage";
@@ -8,21 +10,91 @@ import RegisterPage from "../pages/public/RegisterPage";
 
 const router = createBrowserRouter([
   {
-    path: "/",
     element: <PublicLayout />,
     children: [
       {
-        index: true,
+        path: "/",
         element: <LandingPage />,
       },
       {
-        path: "login",
+        path: "/login",
         element: <LoginPage />,
       },
       {
-        path: "register",
+        path: "/register",
         element: <RegisterPage />,
       },
+    ],
+  },
+  {
+    element: <ApplicationLayout />,
+    children: [
+      {
+        path: "/dashboard",
+        element: <DashboardPage />,
+      },
+      {
+        path: "/jobs/:jobId",
+        element: (
+          <PlaceholderPage
+            title="Job details"
+            description="The complete job advertisement and match analysis will appear here."
+          />
+        ),
+      },
+      {
+        path: "/saved-jobs",
+        element: (
+          <PlaceholderPage
+            title="Saved jobs"
+            description="Jobs saved for later review will appear here."
+          />
+        ),
+      },
+      {
+        path: "/applications",
+        element: (
+          <PlaceholderPage
+            title="Application tracker"
+            description="Track your job applications and their current status."
+          />
+        ),
+      },
+      {
+        path: "/applications/:applicationId",
+        element: (
+          <PlaceholderPage
+            title="Application details"
+            description="Review and update a specific application."
+          />
+        ),
+      },
+      {
+        path: "/profile",
+        element: (
+          <PlaceholderPage
+            title="Professional profile"
+            description="Manage your education, experience, skills, and certifications."
+          />
+        ),
+      },
+      {
+        path: "/preferences",
+        element: (
+          <PlaceholderPage
+            title="Job preferences"
+            description="Manage your preferred titles, locations, work modes, and sectors."
+          />
+        ),
+      },
+    ],
+  },
+  {
+    path: "*",
+    element: (
+      <PublicLayout />
+    ),
+    children: [
       {
         path: "*",
         element: <NotFoundPage />,
