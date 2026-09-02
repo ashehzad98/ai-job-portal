@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { ButtonLink } from "../../components/ui/Button";
 
 function LandingPage() {
   return (
@@ -18,19 +18,13 @@ function LandingPage() {
         </p>
 
         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-          <Link
-            to="/register"
-            className="rounded-lg bg-brand-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-brand-700"
-          >
+          <ButtonLink to="/register" size="lg">
             Create your profile
-          </Link>
+          </ButtonLink>
 
-          <Link
-            to="/login"
-            className="rounded-lg border border-border bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
-          >
+          <ButtonLink to="/login" variant="secondary" size="lg">
             Sign in
-          </Link>
+          </ButtonLink>
         </div>
       </section>
     </main>

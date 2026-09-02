@@ -1,5 +1,7 @@
 import { Link, NavLink, Outlet } from "react-router-dom";
 
+import { ButtonLink } from "../components/ui/Button";
+
 const navigationLinkClass = ({ isActive }: { isActive: boolean }) =>
   [
     "rounded-lg px-3 py-2 text-sm font-semibold transition",
@@ -25,12 +27,9 @@ function PublicLayout() {
               Sign in
             </NavLink>
 
-            <NavLink
-              to="/register"
-              className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-700"
-            >
+            <ButtonLink to="/register" size="sm">
               Get started
-            </NavLink>
+            </ButtonLink>
           </nav>
         </div>
       </header>
