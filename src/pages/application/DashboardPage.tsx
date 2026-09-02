@@ -1,21 +1,45 @@
-import { BriefcaseBusiness } from "lucide-react";
+import { useState } from "react";
+
 import { DashboardSummary } from "../../components/dashboard/DashboardSummary";
+import { JobCardList } from "../../components/jobs/JobCardList";
 import { JobTable } from "../../components/jobs/JobTable";
 import { mockJobs } from "../../data/mockJobs";
 
 const mockApplicationCount = 4;
 
 function DashboardPage() {
+  const [savedJobIds, setSavedJobIds] = useState(
+    () =>
+      new Set(
+        mockJobs
+          .filter((job) => job.isSaved)
+          .map((job) => job.id),
+      ),
+  );
+
   const newMatchCount = mockJobs.filter((job) => job.isNew).length;
-  const savedJobCount = mockJobs.filter((job) => job.isSaved).length;
+
+  function toggleSavedJob(jobId: string) {
+    setSavedJobIds((currentIds) => {
+      const nextIds = new Set(currentIds);
+
+      if (nextIds.has(jobId)) {
+        nextIds.delete(jobId);
+      } else {
+        nextIds.add(jobId);
+      }
+
+      return nextIds;
+    });
+  }
 
   return (
     <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
       <DashboardSummary
-        firstName="First Name"
+        firstName="Ashraf"
         totalMatches={mockJobs.length}
         newMatches={newMatchCount}
-        savedJobs={savedJobCount}
+        savedJobs={savedJobIds.size}
         applications={mockApplicationCount}
       />
 
@@ -44,18 +68,17 @@ function DashboardPage() {
         </div>
 
         <div className="mt-5">
-          <JobTable jobs={mockJobs} />
+          <JobTable
+            jobs={mockJobs}
+            savedJobIds={savedJobIds}
+            onToggleSaved={toggleSavedJob}
+          />
 
-          <div className="rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center xl:hidden">
-            <BriefcaseBusiness
-              aria-hidden="true"
-              className="mx-auto size-6 text-slate-400"
-            />
-
-            <p className="mt-3 text-sm text-slate-500">
-              The responsive job cards will be added in the next step.
-            </p>
-          </div>
+          <JobCardList
+            jobs={mockJobs}
+            savedJobIds={savedJobIds}
+            onToggleSaved={toggleSavedJob}
+          />
         </div>
       </section>
     </main>

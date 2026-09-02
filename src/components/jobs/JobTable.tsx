@@ -1,68 +1,25 @@
-import {
-  Bookmark,
-  Eye,
-  MapPin,
-} from "lucide-react";
-import { useState, type ReactNode } from "react";
+import { Bookmark, Eye, MapPin } from "lucide-react";
+import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 
 import type { Job } from "../../data/job";
+import {
+  formatExactDate,
+  formatPostedDate,
+} from "../../utils/jobDate";
 import { MatchScoreBadge } from "./MatchScoreBadge";
 
 type JobTableProps = {
   jobs: Job[];
+  savedJobIds: ReadonlySet<string>;
+  onToggleSaved: (jobId: string) => void;
 };
 
-function formatPostedDate(dateValue: string) {
-  const postedDate = new Date(`${dateValue}T00:00:00Z`);
-  const currentDate = new Date();
-
-  const differenceInMilliseconds =
-    currentDate.getTime() - postedDate.getTime();
-
-  const differenceInDays = Math.max(
-    0,
-    Math.floor(differenceInMilliseconds / (1000 * 60 * 60 * 24)),
-  );
-
-  if (differenceInDays === 0) {
-    return "Today";
-  }
-
-  if (differenceInDays === 1) {
-    return "Yesterday";
-  }
-
-  return `${differenceInDays} days ago`;
-}
-
-function formatExactDate(dateValue: string) {
-  return new Intl.DateTimeFormat("en-PK", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  }).format(new Date(`${dateValue}T00:00:00Z`));
-}
-
-function JobTable({ jobs }: JobTableProps) {
-  const [savedJobIds, setSavedJobIds] = useState(
-    () => new Set(jobs.filter((job) => job.isSaved).map((job) => job.id)),
-  );
-
-  function toggleSavedJob(jobId: string) {
-    setSavedJobIds((currentIds) => {
-      const nextIds = new Set(currentIds);
-
-      if (nextIds.has(jobId)) {
-        nextIds.delete(jobId);
-      } else {
-        nextIds.add(jobId);
-      }
-
-      return nextIds;
-    });
-  }
-
+function JobTable({
+  jobs,
+  savedJobIds,
+  onToggleSaved,
+}: JobTableProps) {
   return (
     <div className="hidden overflow-hidden rounded-xl border border-border bg-white shadow-card xl:block">
       <div className="overflow-x-auto">
@@ -156,6 +113,7 @@ function JobTable({ jobs }: JobTableProps) {
                       <p className="font-medium text-slate-700">
                         {job.workMode}
                       </p>
+
                       <p className="mt-1 text-xs text-slate-500">
                         {job.jobType}
                       </p>
@@ -189,7 +147,7 @@ function JobTable({ jobs }: JobTableProps) {
                         }
                         aria-pressed={isSaved}
                         title={isSaved ? "Remove saved job" : "Save job"}
-                        onClick={() => toggleSavedJob(job.id)}
+                        onClick={() => onToggleSaved(job.id)}
                         className={[
                           "rounded-lg p-2 transition",
                           isSaved
@@ -247,7 +205,7 @@ function TableHeading({
 }
 
 type TableCellProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   align?: "left" | "right";
 };
 
