@@ -1,6 +1,6 @@
 import type { FormEvent } from "react";
 import { Link } from "react-router-dom";
-
+import { PasswordInput } from "../../components/ui/PasswordInput";
 import { Button } from "../../components/ui/Button";
 import { Input } from "../../components/ui/Input";
 
@@ -38,10 +38,9 @@ function LoginPage() {
           />
 
           <div className="relative">
-            <Input
+            <PasswordInput
               id="password"
               name="password"
-              type="password"
               label="Password"
               placeholder="Enter your password"
               autoComplete="current-password"
