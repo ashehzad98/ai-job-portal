@@ -112,6 +112,15 @@ function ProfilePage() {
                     <SectionCard
                         title="Experience"
                         icon={BriefcaseBusiness}
+                        action={
+                            <ButtonLink
+                                to="/profile/experience"
+                                size="sm"
+                                variant="secondary"
+                            >
+                                Manage
+                            </ButtonLink>
+                        }
                     >
                         {profile.experience.length > 0 ? (
                             <div className="divide-y divide-border">
