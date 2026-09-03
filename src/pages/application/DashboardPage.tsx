@@ -1,6 +1,6 @@
 import { SearchX } from "lucide-react";
 import { useMemo, useState } from "react";
-
+import { useSavedJobs } from "../../hooks/useSavedJobs";
 import { DashboardSummary } from "../../components/dashboard/DashboardSummary";
 import {
   DetailedJobFilters,
@@ -31,15 +31,11 @@ const availableLocations = Array.from(
 ).sort();
 
 function DashboardPage() {
-  const [savedJobIds, setSavedJobIds] = useState(
-    () =>
-      new Set(
-        mockJobs
-          .filter((job) => job.isSaved)
-          .map((job) => job.id),
-      ),
-  );
-
+  const {
+  savedJobIds,
+  savedCount,
+  toggleSavedJob,
+} = useSavedJobs();
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] =
     useState<JobQuickFilter>("all");
@@ -127,20 +123,6 @@ function DashboardPage() {
     sortOption,
   ]);
 
-  function toggleSavedJob(jobId: string) {
-    setSavedJobIds((currentIds) => {
-      const nextIds = new Set(currentIds);
-
-      if (nextIds.has(jobId)) {
-        nextIds.delete(jobId);
-      } else {
-        nextIds.add(jobId);
-      }
-
-      return nextIds;
-    });
-  }
-
   function resetDetailedFilters() {
     setDetailedFilters({ ...initialDetailedFilters });
   }
@@ -157,7 +139,7 @@ function DashboardPage() {
         firstName="Ashraf"
         totalMatches={mockJobs.length}
         newMatches={newMatchCount}
-        savedJobs={savedJobIds.size}
+        savedJobs={savedCount}
         applications={mockApplicationCount}
       />
 

@@ -7,7 +7,8 @@ import {
   ExternalLink,
   MapPin,
 } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
+import { useSavedJobs } from "../../hooks/useSavedJobs";
 import { Link, useParams } from "react-router-dom";
 
 import { MatchScoreBadge } from "../../components/jobs/MatchScoreBadge";
@@ -18,9 +19,9 @@ import { formatExactDate } from "../../utils/jobDate";
 
 function JobDetailsPage() {
   const { jobId } = useParams();
+  const { isJobSaved, toggleSavedJob } = useSavedJobs();
   const job = mockJobs.find((item) => item.id === jobId);
-
-  const [isSaved, setIsSaved] = useState(job?.isSaved ?? false);
+  const isSaved = job ? isJobSaved(job.id) : false;
 
   if (!job) {
     return <JobNotFound />;
@@ -93,7 +94,7 @@ function JobDetailsPage() {
                 type="button"
                 variant="secondary"
                 aria-pressed={isSaved}
-                onClick={() => setIsSaved((currentValue) => !currentValue)}
+                onClick={() => toggleSavedJob(job.id)}
               >
                 <Bookmark
                   aria-hidden="true"
