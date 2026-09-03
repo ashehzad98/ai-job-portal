@@ -3,10 +3,12 @@ import type {
   Education,
   Experience,
   ProfessionalProfile,
+  ProfileSkill,
 } from "../types/profile";
 
 type EducationInput = Omit<Education, "id">;
 type ExperienceInput = Omit<Experience, "id">;
+type ProfileSkillInput = Omit<ProfileSkill, "id">;
 
 type ProfileBasicInfoUpdate = Pick<
   ProfessionalProfile,
@@ -34,6 +36,12 @@ type ProfileContextValue = {
     experience: ExperienceInput,
   ) => void;
   removeExperience: (experienceId: string) => void;
+  addSkill: (skill: ProfileSkillInput) => void;
+  updateSkill: (
+    skillId: string,
+    skill: ProfileSkillInput,
+  ) => void;
+  removeSkill: (skillId: string) => void;
 };
 
 const ProfileContext = createContext<

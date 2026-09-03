@@ -235,7 +235,15 @@ function ProfilePage() {
 
                     </SectionCard>
 
-                    <SectionCard title="Skills" icon={Wrench}>
+                    <SectionCard title="Skills" icon={Wrench} action={
+                        <ButtonLink
+                            to="/profile/skills"
+                            size="sm"
+                            variant="secondary"
+                        >
+                            Manage
+                        </ButtonLink>
+                    }>
                         {profile.skills.length > 0 ? (
                             <div className="flex flex-wrap gap-2">
                                 {profile.skills.map((skill) => (
