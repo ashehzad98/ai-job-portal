@@ -12,6 +12,7 @@ import SavedJobsPage from "../pages/application/SavedJobsPage";
 import ApplicationTrackerPage from "../pages/application/ApplicationTrackerPage";
 import ApplicationDetailsPage from "../pages/application/ApplicationDetailsPage";
 import ProfilePage from "../pages/application/ProfilePage";
+import ProfileEditPage from "../pages/application/ProfileEditPage";
 
 const router = createBrowserRouter([
   {
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
       {
         path: "/profile",
         element: <ProfilePage />,
+      },
+      {
+        path: "/profile/edit",
+        element: <ProfileEditPage />,
       },
       {
         path: "/preferences",

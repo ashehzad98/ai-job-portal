@@ -1,6 +1,6 @@
 import { Bookmark, ClipboardList, LayoutDashboard } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
-
+import { useProfile } from "../../hooks/useProfile";
 import { BrandLogo } from "../../components/brand/BrandLogo";
 
 const navigationItems = [
@@ -22,6 +22,18 @@ const navigationItems = [
 ];
 
 function ApplicationHeader() {
+  const { profile } = useProfile();
+
+  const firstName =
+    profile.fullName.split(" ").filter(Boolean)[0] ?? "User";
+
+  const initials = profile.fullName
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((name) => name[0])
+    .join("")
+    .toUpperCase();
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-white">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
@@ -61,14 +73,14 @@ function ApplicationHeader() {
           className="flex items-center gap-2 rounded-lg p-1.5 transition hover:bg-slate-100"
         >
           <span className="hidden text-sm font-semibold text-slate-700 sm:inline">
-            Ashraf
+            {firstName}
           </span>
 
           <span
             aria-hidden="true"
             className="flex size-9 items-center justify-center rounded-full bg-brand-100 text-sm font-bold text-brand-700"
           >
-            AS
+            {initials}
           </span>
         </Link>
       </div>
