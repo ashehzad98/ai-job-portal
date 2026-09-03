@@ -7,6 +7,7 @@ import LandingPage from "../pages/public/LandingPage";
 import LoginPage from "../pages/public/LoginPage";
 import NotFoundPage from "../pages/public/NotFoundPage";
 import RegisterPage from "../pages/public/RegisterPage";
+import JobDetailsPage from "../pages/application/JobDetailsPage";
 
 const router = createBrowserRouter([
   {
@@ -35,12 +36,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/jobs/:jobId",
-        element: (
-          <PlaceholderPage
-            title="Job details"
-            description="The complete job advertisement and match analysis will appear here."
-          />
-        ),
+        element: <JobDetailsPage />,
       },
       {
         path: "/saved-jobs",
