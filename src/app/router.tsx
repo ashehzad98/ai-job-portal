@@ -13,6 +13,7 @@ import ApplicationTrackerPage from "../pages/application/ApplicationTrackerPage"
 import ApplicationDetailsPage from "../pages/application/ApplicationDetailsPage";
 import ProfilePage from "../pages/application/ProfilePage";
 import ProfileEditPage from "../pages/application/ProfileEditPage";
+import ProfileEducationPage from "../pages/application/ProfileEducationPage";
 
 const router = createBrowserRouter([
   {
@@ -62,6 +63,10 @@ const router = createBrowserRouter([
       {
         path: "/profile/edit",
         element: <ProfileEditPage />,
+      },
+      {
+        path: "/profile/education",
+        element: <ProfileEducationPage />,
       },
       {
         path: "/preferences",

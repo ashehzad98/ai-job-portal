@@ -169,6 +169,15 @@ function ProfilePage() {
                     <SectionCard
                         title="Education"
                         icon={GraduationCap}
+                        action={
+                            <ButtonLink
+                                to="/profile/education"
+                                size="sm"
+                                variant="secondary"
+                            >
+                                Manage
+                            </ButtonLink>
+                        }
                     >
                         {profile.education.length > 0 ? (
                             <div className="divide-y divide-border">
@@ -214,6 +223,7 @@ function ProfilePage() {
                         ) : (
                             <EmptySection message="No education added." />
                         )}
+
                     </SectionCard>
 
                     <SectionCard title="Skills" icon={Wrench}>
@@ -364,24 +374,30 @@ type SectionCardProps = {
     title: string;
     icon: LucideIcon;
     children: ReactNode;
+    action?: ReactNode;
 };
 
 function SectionCard({
     title,
     icon: Icon,
     children,
+    action,
 }: SectionCardProps) {
     return (
         <section className="rounded-xl border border-border bg-white p-5 shadow-card sm:p-6">
-            <div className="flex items-center gap-2">
-                <Icon
-                    aria-hidden="true"
-                    className="size-5 text-brand-700"
-                />
+            <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-2">
+                    <Icon
+                        aria-hidden="true"
+                        className="size-5 text-brand-700"
+                    />
 
-                <h2 className="text-lg font-bold text-slate-950">
-                    {title}
-                </h2>
+                    <h2 className="text-lg font-bold text-slate-950">
+                        {title}
+                    </h2>
+                </div>
+
+                {action}
             </div>
 
             <div className="mt-5">{children}</div>

@@ -1,5 +1,4 @@
 import { Outlet } from "react-router-dom";
-
 import { ApplicationHeader } from "../pages/application/ApplicationHeader";
 import { ApplicationsProvider } from "../providers/ApplicationsProvider";
 import { ProfileProvider } from "../providers/ProfileProvider";

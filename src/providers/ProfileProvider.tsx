@@ -7,6 +7,7 @@ import {
 
 import {
   ProfileContext,
+  type EducationInput,
   type ProfileBasicInfoUpdate,
   type ProfileContextValue,
 } from "../context/profileContext";
@@ -30,13 +31,73 @@ function ProfileProvider({ children }: ProfileProviderProps) {
     [],
   );
 
+  const addEducation = useCallback(
+      (education: EducationInput) => {
+        setProfile((currentProfile) => ({
+          ...currentProfile,
+          education: [
+            ...currentProfile.education,
+            {
+              id: crypto.randomUUID(),
+              ...education,
+            },
+          ],
+          updatedAt: new Date().toISOString(),
+        }));
+      },
+      [],
+    );
+
+    const updateEducation = useCallback(
+      (
+        educationId: string,
+        education: EducationInput,
+      ) => {
+        setProfile((currentProfile) => ({
+          ...currentProfile,
+          education: currentProfile.education.map((item) =>
+            item.id === educationId
+              ? {
+                  id: item.id,
+                  ...education,
+                }
+              : item,
+          ),
+          updatedAt: new Date().toISOString(),
+        }));
+      },
+      [],
+    );
+
+    const removeEducation = useCallback(
+      (educationId: string) => {
+        setProfile((currentProfile) => ({
+          ...currentProfile,
+          education: currentProfile.education.filter(
+            (item) => item.id !== educationId,
+          ),
+          updatedAt: new Date().toISOString(),
+        }));
+      },
+      [],
+    );
+
   const contextValue = useMemo<ProfileContextValue>(
-    () => ({
-      profile,
-      updateBasicInfo,
-    }),
-    [profile, updateBasicInfo],
-  );
+  () => ({
+    profile,
+    updateBasicInfo,
+    addEducation,
+    updateEducation,
+    removeEducation,
+  }),
+  [
+    profile,
+    updateBasicInfo,
+    addEducation,
+    updateEducation,
+    removeEducation,
+  ],
+);
 
   return (
     <ProfileContext.Provider value={contextValue}>

@@ -1,6 +1,10 @@
 import { createContext } from "react";
+import type {
+  Education,
+  ProfessionalProfile,
+} from "../types/profile";
 
-import type { ProfessionalProfile } from "../types/profile";
+type EducationInput = Omit<Education, "id">;
 
 type ProfileBasicInfoUpdate = Pick<
   ProfessionalProfile,
@@ -16,6 +20,12 @@ type ProfileBasicInfoUpdate = Pick<
 type ProfileContextValue = {
   profile: ProfessionalProfile;
   updateBasicInfo: (update: ProfileBasicInfoUpdate) => void;
+  addEducation: (education: EducationInput) => void;
+  updateEducation: (
+    educationId: string,
+    education: EducationInput,
+  ) => void;
+  removeEducation: (educationId: string) => void;
 };
 
 const ProfileContext = createContext<
@@ -26,4 +36,5 @@ export { ProfileContext };
 export type {
   ProfileBasicInfoUpdate,
   ProfileContextValue,
+  EducationInput,
 };
