@@ -15,6 +15,8 @@ import ProfilePage from "../pages/application/ProfilePage";
 import ProfileEditPage from "../pages/application/ProfileEditPage";
 import ProfileEducationPage from "../pages/application/ProfileEducationPage";
 import ProfileExperiencePage from "../pages/application/ProfileExperiencePage";
+import ProfileSkillsPage from "../pages/application/ProfileSkillsPage";
+import ProfileCertificationsPage from "../pages/application/ProfileCertificationsPage";
 
 const router = createBrowserRouter([
   {
@@ -72,6 +74,14 @@ const router = createBrowserRouter([
       {
         path: "/profile/experience",
         element: <ProfileExperiencePage />,
+      },
+      {
+        path: "/profile/skills",
+        element: <ProfileSkillsPage />,
+      },
+      {
+        path: "/profile/certifications",
+        element: <ProfileCertificationsPage />,
       },
       {
         path: "/preferences",

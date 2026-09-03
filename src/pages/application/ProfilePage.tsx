@@ -266,7 +266,15 @@ function ProfilePage() {
                         )}
                     </SectionCard>
 
-                    <SectionCard title="Certifications" icon={Award}>
+                    <SectionCard title="Certifications" icon={Award} action={
+                        <ButtonLink
+                            to="/profile/certifications"
+                            size="sm"
+                            variant="secondary"
+                        >
+                            Manage
+                        </ButtonLink>
+                    }>
                         {profile.certifications.length > 0 ? (
                             <div className="divide-y divide-border">
                                 {profile.certifications.map((certification) => (

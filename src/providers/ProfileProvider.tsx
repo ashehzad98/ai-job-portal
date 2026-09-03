@@ -11,6 +11,7 @@ import {
   type ProfileBasicInfoUpdate,
   type ProfileContextValue,
   type ExperienceInput,
+  type ProfileSkillInput,
 } from "../context/profileContext";
 import { mockProfile } from "../data/mockProfile";
 
@@ -134,6 +135,48 @@ function ProfileProvider({ children }: ProfileProviderProps) {
     [],
   );
 
+  const addSkill = useCallback((skill: ProfileSkillInput) => {
+    setProfile((currentProfile) => ({
+      ...currentProfile,
+      skills: [
+        ...currentProfile.skills,
+        {
+          id: crypto.randomUUID(),
+          ...skill,
+        },
+      ],
+      updatedAt: new Date().toISOString(),
+    }));
+  }, []);
+
+  const updateSkill = useCallback(
+    (skillId: string, skill: ProfileSkillInput) => {
+      setProfile((currentProfile) => ({
+        ...currentProfile,
+        skills: currentProfile.skills.map((item) =>
+          item.id === skillId
+            ? {
+              id: item.id,
+              ...skill,
+            }
+            : item,
+        ),
+        updatedAt: new Date().toISOString(),
+      }));
+    },
+    [],
+  );
+
+  const removeSkill = useCallback((skillId: string) => {
+    setProfile((currentProfile) => ({
+      ...currentProfile,
+      skills: currentProfile.skills.filter(
+        (item) => item.id !== skillId,
+      ),
+      updatedAt: new Date().toISOString(),
+    }));
+  }, []);
+
   const contextValue = useMemo<ProfileContextValue>(
     () => ({
       profile,
@@ -144,6 +187,9 @@ function ProfileProvider({ children }: ProfileProviderProps) {
       addExperience,
       updateExperience,
       removeExperience,
+      addSkill,
+      updateSkill,
+      removeSkill
     }),
     [
       profile,

@@ -1,5 +1,6 @@
 import { createContext } from "react";
 import type {
+  Certification,
   Education,
   Experience,
   ProfessionalProfile,
@@ -9,6 +10,7 @@ import type {
 type EducationInput = Omit<Education, "id">;
 type ExperienceInput = Omit<Experience, "id">;
 type ProfileSkillInput = Omit<ProfileSkill, "id">;
+type CertificationInput = Omit<Certification, "id">;
 
 type ProfileBasicInfoUpdate = Pick<
   ProfessionalProfile,
@@ -42,6 +44,14 @@ type ProfileContextValue = {
     skill: ProfileSkillInput,
   ) => void;
   removeSkill: (skillId: string) => void;
+  addCertification: (
+    certification: CertificationInput,
+  ) => void;
+  updateCertification: (
+    certificationId: string,
+    certification: CertificationInput,
+  ) => void;
+  removeCertification: (certificationId: string) => void;
 };
 
 const ProfileContext = createContext<
@@ -50,8 +60,10 @@ const ProfileContext = createContext<
 
 export { ProfileContext };
 export type {
+  CertificationInput,
   EducationInput,
   ExperienceInput,
   ProfileBasicInfoUpdate,
   ProfileContextValue,
+  ProfileSkillInput,
 };
