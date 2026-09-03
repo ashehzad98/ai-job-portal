@@ -11,6 +11,7 @@ import JobDetailsPage from "../pages/application/JobDetailsPage";
 import SavedJobsPage from "../pages/application/SavedJobsPage";
 import ApplicationTrackerPage from "../pages/application/ApplicationTrackerPage";
 import ApplicationDetailsPage from "../pages/application/ApplicationDetailsPage";
+import ProfilePage from "../pages/application/ProfilePage";
 
 const router = createBrowserRouter([
   {
@@ -55,12 +56,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/profile",
-        element: (
-          <PlaceholderPage
-            title="Professional profile"
-            description="Manage your education, experience, skills, and certifications."
-          />
-        ),
+        element: <ProfilePage />,
       },
       {
         path: "/preferences",
