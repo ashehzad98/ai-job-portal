@@ -10,6 +10,7 @@ import RegisterPage from "../pages/public/RegisterPage";
 import JobDetailsPage from "../pages/application/JobDetailsPage";
 import SavedJobsPage from "../pages/application/SavedJobsPage";
 import ApplicationTrackerPage from "../pages/application/ApplicationTrackerPage";
+import ApplicationDetailsPage from "../pages/application/ApplicationDetailsPage";
 
 const router = createBrowserRouter([
   {
@@ -50,12 +51,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/applications/:applicationId",
-        element: (
-          <PlaceholderPage
-            title="Application details"
-            description="Review and update a specific application."
-          />
-        ),
+        element: <ApplicationDetailsPage />,
       },
       {
         path: "/profile",
