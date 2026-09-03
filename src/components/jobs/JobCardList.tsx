@@ -9,6 +9,7 @@ import type { Job } from "../../data/job";
 import {
   formatExactDate,
   formatPostedDate,
+  formatSavedDate,
 } from "../../utils/jobDate";
 import { ButtonLink } from "../ui/Button";
 import { MatchScoreBadge } from "./MatchScoreBadge";
@@ -16,19 +17,28 @@ import { MatchScoreBadge } from "./MatchScoreBadge";
 type JobCardListProps = {
   jobs: Job[];
   savedJobIds: ReadonlySet<string>;
+  savedAtByJobId?: ReadonlyMap<string, string>;
   onToggleSaved: (jobId: string) => void;
+  displayMode?: "responsive" | "always";
 };
 
 function JobCardList({
   jobs,
   savedJobIds,
+  savedAtByJobId,
   onToggleSaved,
+  displayMode = "responsive",
 }: JobCardListProps) {
   return (
-    <div className="grid gap-4 md:grid-cols-2 xl:hidden">
+    <div
+      className={[
+        "grid gap-4 md:grid-cols-2",
+        displayMode === "responsive" ? "xl:hidden" : "xl:grid-cols-3",
+      ].join(" ")}
+    >
       {jobs.map((job) => {
         const isSaved = savedJobIds.has(job.id);
-
+        const savedAt = savedAtByJobId?.get(job.id);
         return (
           <article
             key={job.id}
@@ -87,19 +97,24 @@ function JobCardList({
               ))}
             </div>
 
-            <div className="mt-4 flex items-center justify-between border-t border-border pt-4 text-sm">
+            <div className="flex flex-col gap-1">
               <time
                 dateTime={job.postedAt}
                 title={formatExactDate(job.postedAt)}
                 className="inline-flex items-center gap-1.5 text-slate-500"
               >
                 <Clock3 aria-hidden="true" className="size-4" />
-                {formatPostedDate(job.postedAt)}
+                Posted {formatPostedDate(job.postedAt)}
               </time>
 
-              <span className="font-semibold text-slate-700">
-                {job.salary ?? "Salary not listed"}
-              </span>
+              {savedAt && (
+                <time
+                  dateTime={savedAt}
+                  className="text-xs font-medium text-brand-700"
+                >
+                  Saved {formatSavedDate(savedAt)}
+                </time>
+              )}
             </div>
 
             <div className="mt-auto flex gap-2 pt-5">

@@ -8,6 +8,7 @@ import LoginPage from "../pages/public/LoginPage";
 import NotFoundPage from "../pages/public/NotFoundPage";
 import RegisterPage from "../pages/public/RegisterPage";
 import JobDetailsPage from "../pages/application/JobDetailsPage";
+import SavedJobsPage from "../pages/application/SavedJobsPage";
 
 const router = createBrowserRouter([
   {
@@ -40,12 +41,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/saved-jobs",
-        element: (
-          <PlaceholderPage
-            title="Saved jobs"
-            description="Jobs saved for later review will appear here."
-          />
-        ),
+        element: <SavedJobsPage />,
       },
       {
         path: "/applications",

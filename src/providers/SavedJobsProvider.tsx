@@ -15,43 +15,64 @@ type SavedJobsProviderProps = {
   children: ReactNode;
 };
 
+const oneDayInMilliseconds = 24 * 60 * 60 * 1000;
+
+function createInitialSavedJobs() {
+  const savedJobs = mockJobs.filter((job) => job.isSaved);
+
+  return new Map(
+    savedJobs.map((job, index) => [
+      job.id,
+      new Date(
+        Date.now() - index * oneDayInMilliseconds,
+      ).toISOString(),
+    ]),
+  );
+}
+
 function SavedJobsProvider({ children }: SavedJobsProviderProps) {
-  const [savedJobIds, setSavedJobIds] = useState(
-    () =>
-      new Set(
-        mockJobs
-          .filter((job) => job.isSaved)
-          .map((job) => job.id),
-      ),
+  const [savedAtByJobId, setSavedAtByJobId] = useState(
+    createInitialSavedJobs,
+  );
+
+  const savedJobIds = useMemo(
+    () => new Set(savedAtByJobId.keys()),
+    [savedAtByJobId],
   );
 
   const toggleSavedJob = useCallback((jobId: string) => {
-    setSavedJobIds((currentIds) => {
-      const nextIds = new Set(currentIds);
+    setSavedAtByJobId((currentSavedJobs) => {
+      const nextSavedJobs = new Map(currentSavedJobs);
 
-      if (nextIds.has(jobId)) {
-        nextIds.delete(jobId);
+      if (nextSavedJobs.has(jobId)) {
+        nextSavedJobs.delete(jobId);
       } else {
-        nextIds.add(jobId);
+        nextSavedJobs.set(jobId, new Date().toISOString());
       }
 
-      return nextIds;
+      return nextSavedJobs;
     });
   }, []);
 
   const isJobSaved = useCallback(
-    (jobId: string) => savedJobIds.has(jobId),
-    [savedJobIds],
+    (jobId: string) => savedAtByJobId.has(jobId),
+    [savedAtByJobId],
   );
 
   const contextValue = useMemo<SavedJobsContextValue>(
     () => ({
       savedJobIds,
-      savedCount: savedJobIds.size,
+      savedAtByJobId,
+      savedCount: savedAtByJobId.size,
       isJobSaved,
       toggleSavedJob,
     }),
-    [isJobSaved, savedJobIds, toggleSavedJob],
+    [
+      isJobSaved,
+      savedAtByJobId,
+      savedJobIds,
+      toggleSavedJob,
+    ],
   );
 
   return (

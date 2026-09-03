@@ -33,4 +33,12 @@ function formatExactDate(dateValue: string) {
   }).format(parseJobDate(dateValue));
 }
 
-export { formatExactDate, formatPostedDate };
+function formatSavedDate(dateValue: string) {
+  return new Intl.DateTimeFormat("en-PK", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  }).format(new Date(dateValue));
+}
+
+export { formatExactDate, formatPostedDate, formatSavedDate };
