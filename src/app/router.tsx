@@ -2,7 +2,6 @@ import { createBrowserRouter } from "react-router-dom";
 import ApplicationLayout from "../layouts/ApplicationLayout";
 import PublicLayout from "../layouts/PublicLayout";
 import DashboardPage from "../pages/application/DashboardPage";
-import PlaceholderPage from "../pages/application/PlaceholderPage";
 import LandingPage from "../pages/public/LandingPage";
 import LoginPage from "../pages/public/LoginPage";
 import NotFoundPage from "../pages/public/NotFoundPage";
@@ -17,6 +16,7 @@ import ProfileEducationPage from "../pages/application/ProfileEducationPage";
 import ProfileExperiencePage from "../pages/application/ProfileExperiencePage";
 import ProfileSkillsPage from "../pages/application/ProfileSkillsPage";
 import ProfileCertificationsPage from "../pages/application/ProfileCertificationsPage";
+import PreferencesPage from "../pages/application/PreferencesPage";
 
 const router = createBrowserRouter([
   {
@@ -85,12 +85,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/preferences",
-        element: (
-          <PlaceholderPage
-            title="Job preferences"
-            description="Manage your preferred titles, locations, work modes, and sectors."
-          />
-        ),
+        element: <PreferencesPage />,
       },
     ],
   },

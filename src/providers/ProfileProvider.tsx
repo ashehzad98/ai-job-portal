@@ -12,6 +12,7 @@ import {
   type ProfileContextValue,
   type ExperienceInput,
   type ProfileSkillInput,
+  type CertificationInput,
 } from "../context/profileContext";
 import { mockProfile } from "../data/mockProfile";
 
@@ -177,6 +178,58 @@ function ProfileProvider({ children }: ProfileProviderProps) {
     }));
   }, []);
 
+  const addCertification = useCallback(
+    (certification: CertificationInput) => {
+      setProfile((currentProfile) => ({
+        ...currentProfile,
+        certifications: [
+          ...currentProfile.certifications,
+          {
+            id: crypto.randomUUID(),
+            ...certification,
+          },
+        ],
+        updatedAt: new Date().toISOString(),
+      }));
+    },
+    [],
+  );
+
+  const updateCertification = useCallback(
+    (
+      certificationId: string,
+      certification: CertificationInput,
+    ) => {
+      setProfile((currentProfile) => ({
+        ...currentProfile,
+        certifications: currentProfile.certifications.map(
+          (item) =>
+            item.id === certificationId
+              ? {
+                id: item.id,
+                ...certification,
+              }
+              : item,
+        ),
+        updatedAt: new Date().toISOString(),
+      }));
+    },
+    [],
+  );
+
+  const removeCertification = useCallback(
+    (certificationId: string) => {
+      setProfile((currentProfile) => ({
+        ...currentProfile,
+        certifications: currentProfile.certifications.filter(
+          (item) => item.id !== certificationId,
+        ),
+        updatedAt: new Date().toISOString(),
+      }));
+    },
+    [],
+  );
+
   const contextValue = useMemo<ProfileContextValue>(
     () => ({
       profile,
@@ -189,7 +242,10 @@ function ProfileProvider({ children }: ProfileProviderProps) {
       removeExperience,
       addSkill,
       updateSkill,
-      removeSkill
+      removeSkill,
+      addCertification,
+      updateCertification,
+      removeCertification,
     }),
     [
       profile,
