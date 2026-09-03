@@ -9,6 +9,7 @@ import NotFoundPage from "../pages/public/NotFoundPage";
 import RegisterPage from "../pages/public/RegisterPage";
 import JobDetailsPage from "../pages/application/JobDetailsPage";
 import SavedJobsPage from "../pages/application/SavedJobsPage";
+import ApplicationTrackerPage from "../pages/application/ApplicationTrackerPage";
 
 const router = createBrowserRouter([
   {
@@ -45,12 +46,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/applications",
-        element: (
-          <PlaceholderPage
-            title="Application tracker"
-            description="Track your job applications and their current status."
-          />
-        ),
+        element: <ApplicationTrackerPage />,
       },
       {
         path: "/applications/:applicationId",
