@@ -2,6 +2,10 @@ import { SearchX } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import { DashboardSummary } from "../../components/dashboard/DashboardSummary";
+import {
+  DetailedJobFilters,
+  type DetailedJobFiltersValue,
+} from "../../components/jobs/DetailedJobFilters";
 import { JobCardList } from "../../components/jobs/JobCardList";
 import {
   JobFeedControls,
@@ -13,6 +17,18 @@ import { Button } from "../../components/ui/Button";
 import { mockJobs } from "../../data/mockJobs";
 
 const mockApplicationCount = 4;
+
+const initialDetailedFilters: DetailedJobFiltersValue = {
+  location: "all",
+  jobType: "all",
+  workMode: "all",
+  sector: "all",
+  minimumMatchScore: 0,
+};
+
+const availableLocations = Array.from(
+  new Set(mockJobs.map((job) => job.location)),
+).sort();
 
 function DashboardPage() {
   const [savedJobIds, setSavedJobIds] = useState(
@@ -29,8 +45,22 @@ function DashboardPage() {
     useState<JobQuickFilter>("all");
   const [sortOption, setSortOption] =
     useState<JobSortOption>("best-match");
+  const [isDetailedFiltersOpen, setIsDetailedFiltersOpen] =
+    useState(false);
+  const [detailedFilters, setDetailedFilters] =
+    useState<DetailedJobFiltersValue>({
+      ...initialDetailedFilters,
+    });
 
   const newMatchCount = mockJobs.filter((job) => job.isNew).length;
+
+  const activeDetailedFilterCount = [
+    detailedFilters.location !== "all",
+    detailedFilters.jobType !== "all",
+    detailedFilters.workMode !== "all",
+    detailedFilters.sector !== "all",
+    detailedFilters.minimumMatchScore > 0,
+  ].filter(Boolean).length;
 
   const visibleJobs = useMemo(() => {
     const normalizedSearch = searchQuery.trim().toLowerCase();
@@ -53,7 +83,34 @@ function DashboardPage() {
         (activeFilter === "government" &&
           job.sector === "Government");
 
-      return matchesSearch && matchesQuickFilter;
+      const matchesLocation =
+        detailedFilters.location === "all" ||
+        job.location === detailedFilters.location;
+
+      const matchesJobType =
+        detailedFilters.jobType === "all" ||
+        job.jobType === detailedFilters.jobType;
+
+      const matchesWorkMode =
+        detailedFilters.workMode === "all" ||
+        job.workMode === detailedFilters.workMode;
+
+      const matchesSector =
+        detailedFilters.sector === "all" ||
+        job.sector === detailedFilters.sector;
+
+      const matchesMinimumScore =
+        job.match.score >= detailedFilters.minimumMatchScore;
+
+      return (
+        matchesSearch &&
+        matchesQuickFilter &&
+        matchesLocation &&
+        matchesJobType &&
+        matchesWorkMode &&
+        matchesSector &&
+        matchesMinimumScore
+      );
     });
 
     return [...filteredJobs].sort((firstJob, secondJob) => {
@@ -63,7 +120,12 @@ function DashboardPage() {
 
       return secondJob.match.score - firstJob.match.score;
     });
-  }, [activeFilter, searchQuery, sortOption]);
+  }, [
+    activeFilter,
+    detailedFilters,
+    searchQuery,
+    sortOption,
+  ]);
 
   function toggleSavedJob(jobId: string) {
     setSavedJobIds((currentIds) => {
@@ -79,9 +141,14 @@ function DashboardPage() {
     });
   }
 
-  function clearFilters() {
+  function resetDetailedFilters() {
+    setDetailedFilters({ ...initialDetailedFilters });
+  }
+
+  function clearAllFilters() {
     setSearchQuery("");
     setActiveFilter("all");
+    resetDetailedFilters();
   }
 
   return (
@@ -118,11 +185,27 @@ function DashboardPage() {
             activeFilter={activeFilter}
             sortOption={sortOption}
             resultCount={visibleJobs.length}
+            isDetailedFiltersOpen={isDetailedFiltersOpen}
+            activeDetailedFilterCount={activeDetailedFilterCount}
             onSearchChange={setSearchQuery}
             onFilterChange={setActiveFilter}
             onSortChange={setSortOption}
-            onClearFilters={clearFilters}
+            onClearFilters={clearAllFilters}
+            onToggleDetailedFilters={() =>
+              setIsDetailedFiltersOpen((currentValue) => !currentValue)
+            }
           />
+
+          {isDetailedFiltersOpen && (
+            <div id="detailed-job-filters">
+              <DetailedJobFilters
+                value={detailedFilters}
+                locations={availableLocations}
+                onChange={setDetailedFilters}
+                onReset={resetDetailedFilters}
+              />
+            </div>
+          )}
         </div>
 
         <div className="mt-5">
@@ -151,17 +234,16 @@ function DashboardPage() {
               </h3>
 
               <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-600">
-                Try another search term or clear the active filters to
-                view more opportunities.
+                Try another search term or clear the active filters.
               </p>
 
               <Button
                 type="button"
                 variant="secondary"
-                onClick={clearFilters}
+                onClick={clearAllFilters}
                 className="mt-5"
               >
-                Clear filters
+                Clear all filters
               </Button>
             </div>
           )}
