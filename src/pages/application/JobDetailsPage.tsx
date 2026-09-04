@@ -1,4 +1,4 @@
-import {
+﻿import {
   ArrowLeft,
   Bookmark,
   BriefcaseBusiness,
@@ -73,7 +73,7 @@ function JobDetailsPage() {
                     aria-hidden="true"
                     className="size-4"
                   />
-                  {job.workMode} · {job.jobType}
+                  {job.workMode} / {job.jobType}
                 </span>
 
                 <time
@@ -149,7 +149,7 @@ function JobDetailsPage() {
 
             <DefinitionItem
               label="Work arrangement"
-              value={`${job.workMode} · ${job.jobType}`}
+              value={`${job.workMode} / ${job.jobType}`}
             />
 
             <DefinitionItem
