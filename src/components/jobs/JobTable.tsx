@@ -2,7 +2,7 @@ import { Bookmark, Eye, MapPin } from "lucide-react";
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 
-import type { Job } from "../../data/job";
+import type { Job } from "../../types/job";
 import {
   formatExactDate,
   formatPostedDate,

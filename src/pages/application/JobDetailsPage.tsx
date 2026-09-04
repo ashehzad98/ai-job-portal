@@ -13,14 +13,15 @@ import { Link, useParams } from "react-router-dom";
 
 import { MatchScoreBadge } from "../../components/jobs/MatchScoreBadge";
 import { Button } from "../../components/ui/Button";
-import { mockJobs } from "../../data/mockJobs";
+import { useMatchedJobs } from "../../hooks/useMatchedJobs";
 import type { MatchStatus } from "../../types/job";
 import { formatExactDate } from "../../utils/jobDate";
 
 function JobDetailsPage() {
   const { jobId } = useParams();
   const { isJobSaved, toggleSavedJob } = useSavedJobs();
-  const job = mockJobs.find((item) => item.id === jobId);
+  const { allJobs } = useMatchedJobs();
+  const job = allJobs.find((item) => item.id === jobId);
   const isSaved = job ? isJobSaved(job.id) : false;
 
   if (!job) {

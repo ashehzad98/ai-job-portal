@@ -5,7 +5,7 @@ import {
   MapPin,
 } from "lucide-react";
 
-import type { Job } from "../../data/job";
+import type { Job } from "../../types/job";
 import {
   formatExactDate,
   formatPostedDate,

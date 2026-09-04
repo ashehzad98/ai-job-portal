@@ -7,7 +7,7 @@ import {
 
 import { JobCardList } from "../../components/jobs/JobCardList";
 import { Button, ButtonLink } from "../../components/ui/Button";
-import { mockJobs } from "../../data/mockJobs";
+import { useMatchedJobs } from "../../hooks/useMatchedJobs";
 import { useSavedJobs } from "../../hooks/useSavedJobs";
 
 type SavedJobSort = "recently-saved" | "best-match";
@@ -24,6 +24,7 @@ function SavedJobsPage() {
     savedCount,
     toggleSavedJob,
   } = useSavedJobs();
+  const { allJobs } = useMatchedJobs();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOption, setSortOption] =
@@ -46,7 +47,7 @@ function SavedJobsPage() {
   const visibleSavedJobs = useMemo(() => {
     const normalizedSearch = searchQuery.trim().toLowerCase();
 
-    const jobs = mockJobs.filter((job) => {
+    const jobs = allJobs.filter((job) => {
       const isSaved = savedJobIds.has(job.id);
 
       const matchesSearch =
@@ -73,6 +74,7 @@ function SavedJobsPage() {
       return secondSavedAt.localeCompare(firstSavedAt);
     });
   }, [
+    allJobs,
     savedAtByJobId,
     savedJobIds,
     searchQuery,
@@ -80,7 +82,7 @@ function SavedJobsPage() {
   ]);
 
   function handleToggleSaved(jobId: string) {
-    const job = mockJobs.find((item) => item.id === jobId);
+    const job = allJobs.find((item) => item.id === jobId);
 
     if (job && savedJobIds.has(jobId)) {
       setRemovedJob({

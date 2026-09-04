@@ -14,7 +14,7 @@ import {
 } from "../../components/jobs/JobFeedControls";
 import { JobTable } from "../../components/jobs/JobTable";
 import { Button } from "../../components/ui/Button";
-import { mockJobs } from "../../data/mockJobs";
+import { useMatchedJobs } from "../../hooks/useMatchedJobs";
 
 const mockApplicationCount = 4;
 
@@ -26,16 +26,13 @@ const initialDetailedFilters: DetailedJobFiltersValue = {
   minimumMatchScore: 0,
 };
 
-const availableLocations = Array.from(
-  new Set(mockJobs.map((job) => job.location)),
-).sort();
-
 function DashboardPage() {
   const {
   savedJobIds,
   savedCount,
   toggleSavedJob,
 } = useSavedJobs();
+  const { matchedJobs } = useMatchedJobs();
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] =
     useState<JobQuickFilter>("all");
@@ -48,7 +45,17 @@ function DashboardPage() {
       ...initialDetailedFilters,
     });
 
-  const newMatchCount = mockJobs.filter((job) => job.isNew).length;
+  const newMatchCount = matchedJobs.filter(
+    (job) => job.isNew,
+  ).length;
+
+  const availableLocations = useMemo(
+    () =>
+      Array.from(
+        new Set(matchedJobs.map((job) => job.location)),
+      ).sort(),
+    [matchedJobs],
+  );
 
   const activeDetailedFilterCount = [
     detailedFilters.location !== "all",
@@ -61,7 +68,7 @@ function DashboardPage() {
   const visibleJobs = useMemo(() => {
     const normalizedSearch = searchQuery.trim().toLowerCase();
 
-    const filteredJobs = mockJobs.filter((job) => {
+    const filteredJobs = matchedJobs.filter((job) => {
       const matchesSearch =
         normalizedSearch.length === 0 ||
         job.title.toLowerCase().includes(normalizedSearch) ||
@@ -119,6 +126,7 @@ function DashboardPage() {
   }, [
     activeFilter,
     detailedFilters,
+    matchedJobs,
     searchQuery,
     sortOption,
   ]);
@@ -137,7 +145,7 @@ function DashboardPage() {
     <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
       <DashboardSummary
         firstName="Ashraf"
-        totalMatches={mockJobs.length}
+        totalMatches={matchedJobs.length}
         newMatches={newMatchCount}
         savedJobs={savedCount}
         applications={mockApplicationCount}

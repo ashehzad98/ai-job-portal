@@ -1,4 +1,4 @@
-import type { Job } from "./job";
+import type { Job } from "../types/job";
 
 const mockJobs: Job[] = [
   {

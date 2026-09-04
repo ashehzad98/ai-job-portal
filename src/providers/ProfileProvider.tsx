@@ -7,12 +7,12 @@ import {
 
 import {
   ProfileContext,
+  type CertificationInput,
   type EducationInput,
+  type ExperienceInput,
   type ProfileBasicInfoUpdate,
   type ProfileContextValue,
-  type ExperienceInput,
   type ProfileSkillInput,
-  type CertificationInput,
 } from "../context/profileContext";
 import { mockProfile } from "../data/mockProfile";
 
@@ -20,7 +20,9 @@ type ProfileProviderProps = {
   children: ReactNode;
 };
 
-function ProfileProvider({ children }: ProfileProviderProps) {
+function ProfileProvider({
+  children,
+}: ProfileProviderProps) {
   const [profile, setProfile] = useState(mockProfile);
 
   const updateBasicInfo = useCallback(
@@ -61,9 +63,9 @@ function ProfileProvider({ children }: ProfileProviderProps) {
         education: currentProfile.education.map((item) =>
           item.id === educationId
             ? {
-              id: item.id,
-              ...education,
-            }
+                id: item.id,
+                ...education,
+              }
             : item,
         ),
         updatedAt: new Date().toISOString(),
@@ -112,9 +114,9 @@ function ProfileProvider({ children }: ProfileProviderProps) {
         experience: currentProfile.experience.map((item) =>
           item.id === experienceId
             ? {
-              id: item.id,
-              ...experience,
-            }
+                id: item.id,
+                ...experience,
+              }
             : item,
         ),
         updatedAt: new Date().toISOString(),
@@ -136,30 +138,36 @@ function ProfileProvider({ children }: ProfileProviderProps) {
     [],
   );
 
-  const addSkill = useCallback((skill: ProfileSkillInput) => {
-    setProfile((currentProfile) => ({
-      ...currentProfile,
-      skills: [
-        ...currentProfile.skills,
-        {
-          id: crypto.randomUUID(),
-          ...skill,
-        },
-      ],
-      updatedAt: new Date().toISOString(),
-    }));
-  }, []);
+  const addSkill = useCallback(
+    (skill: ProfileSkillInput) => {
+      setProfile((currentProfile) => ({
+        ...currentProfile,
+        skills: [
+          ...currentProfile.skills,
+          {
+            id: crypto.randomUUID(),
+            ...skill,
+          },
+        ],
+        updatedAt: new Date().toISOString(),
+      }));
+    },
+    [],
+  );
 
   const updateSkill = useCallback(
-    (skillId: string, skill: ProfileSkillInput) => {
+    (
+      skillId: string,
+      skill: ProfileSkillInput,
+    ) => {
       setProfile((currentProfile) => ({
         ...currentProfile,
         skills: currentProfile.skills.map((item) =>
           item.id === skillId
             ? {
-              id: item.id,
-              ...skill,
-            }
+                id: item.id,
+                ...skill,
+              }
             : item,
         ),
         updatedAt: new Date().toISOString(),
@@ -168,15 +176,18 @@ function ProfileProvider({ children }: ProfileProviderProps) {
     [],
   );
 
-  const removeSkill = useCallback((skillId: string) => {
-    setProfile((currentProfile) => ({
-      ...currentProfile,
-      skills: currentProfile.skills.filter(
-        (item) => item.id !== skillId,
-      ),
-      updatedAt: new Date().toISOString(),
-    }));
-  }, []);
+  const removeSkill = useCallback(
+    (skillId: string) => {
+      setProfile((currentProfile) => ({
+        ...currentProfile,
+        skills: currentProfile.skills.filter(
+          (item) => item.id !== skillId,
+        ),
+        updatedAt: new Date().toISOString(),
+      }));
+    },
+    [],
+  );
 
   const addCertification = useCallback(
     (certification: CertificationInput) => {
@@ -202,15 +213,15 @@ function ProfileProvider({ children }: ProfileProviderProps) {
     ) => {
       setProfile((currentProfile) => ({
         ...currentProfile,
-        certifications: currentProfile.certifications.map(
-          (item) =>
+        certifications:
+          currentProfile.certifications.map((item) =>
             item.id === certificationId
               ? {
-                id: item.id,
-                ...certification,
-              }
+                  id: item.id,
+                  ...certification,
+                }
               : item,
-        ),
+          ),
         updatedAt: new Date().toISOString(),
       }));
     },
@@ -221,9 +232,10 @@ function ProfileProvider({ children }: ProfileProviderProps) {
     (certificationId: string) => {
       setProfile((currentProfile) => ({
         ...currentProfile,
-        certifications: currentProfile.certifications.filter(
-          (item) => item.id !== certificationId,
-        ),
+        certifications:
+          currentProfile.certifications.filter(
+            (item) => item.id !== certificationId,
+          ),
         updatedAt: new Date().toISOString(),
       }));
     },
@@ -256,6 +268,12 @@ function ProfileProvider({ children }: ProfileProviderProps) {
       addExperience,
       updateExperience,
       removeExperience,
+      addSkill,
+      updateSkill,
+      removeSkill,
+      addCertification,
+      updateCertification,
+      removeCertification,
     ],
   );
 
